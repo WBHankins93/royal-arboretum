@@ -1,0 +1,9 @@
+# Utils Directory
+
+Place utility functions and helpers here.
+
+Example:
+- utils/animations.ts - Animation utilities
+- utils/helpers.ts - General helper functions
+- utils/constants.ts - App constants
+

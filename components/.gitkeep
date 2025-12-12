@@ -1,0 +1,9 @@
+# Components Directory
+
+Place your reusable React components here.
+
+Example structure:
+- components/ui/ - Basic UI components (buttons, cards, etc.)
+- components/storybook/ - Storybook-specific components
+- components/interactive/ - Interactive elements with animations
+

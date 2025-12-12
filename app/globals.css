@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --parchment-bg: #f4e8d0;
+  --parchment-dark: #e8d5b7;
+  --parchment-stain: #d4c4a8;
+  --parchment-text: #3d2817;
+}
+
+body {
+  color: var(--parchment-text);
+  background: var(--parchment-bg);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  overflow-x: hidden;
+}
+
+.font-playfair {
+  font-family: var(--font-playfair), 'Georgia', serif;
+}
+
+/* Whimsical title styling */
+.storybook-title {
+  font-family: var(--font-playfair), 'Georgia', serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+}
+
+.storybook-title::before,
+.storybook-title::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.4em;
+  opacity: 0.6;
+  color: var(--parchment-text);
+}
+
+.storybook-title::before {
+  left: -1.2em;
+}
+
+.storybook-title::after {
+  right: -1.2em;
+}
+
+/* Decorative underline */
+.title-decoration {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.title-decoration::before,
+.title-decoration::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--parchment-text),
+    var(--parchment-text),
+    transparent
+  );
+  opacity: 0.4;
+}
+
+.title-decoration::before {
+  right: calc(100% + 1rem);
+  transform: translateY(-50%);
+}
+
+.title-decoration::after {
+  left: calc(100% + 1rem);
+  transform: translateY(-50%);
+}
+
+.title-decoration .decoration-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--parchment-text) 10%,
+    var(--parchment-text) 90%,
+    transparent 100%
+  );
+  opacity: 0.5;
+  position: relative;
+  margin: 0 auto;
+}
+
+.title-decoration .decoration-line::before,
+.title-decoration .decoration-line::after {
+  content: '❋';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: var(--parchment-text);
+  opacity: 0.6;
+}
+
+.title-decoration .decoration-line::before {
+  left: -0.5rem;
+}
+
+.title-decoration .decoration-line::after {
+  right: -0.5rem;
+}
+
+/* Parchment/paper texture background */
+.parchment-bg {
+  background: linear-gradient(
+    135deg,
+    var(--parchment-bg) 0%,
+    var(--parchment-dark) 25%,
+    var(--parchment-bg) 50%,
+    var(--parchment-stain) 75%,
+    var(--parchment-bg) 100%
+  );
+  background-size: 200% 200%;
+  position: relative;
+  min-height: 100vh;
+}
+
+.parchment-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(180, 150, 120, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(160, 130, 100, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(200, 170, 140, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, rgba(170, 140, 110, 0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Book opening animation */
+@keyframes bookOpen {
+  0% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(-90deg) translateX(-10%);
+    opacity: 0.3;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(-180deg) translateX(-20%);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes bookPageReveal {
+  0% {
+    transform: perspective(1500px) rotateY(180deg) translateX(20%);
+    opacity: 0;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(90deg) translateX(10%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+}
+
+.book-open {
+  animation: bookOpen 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: left center;
+}
+
+.book-page-reveal {
+  animation: bookPageReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: right center;
+}
+
+/* Page turning animations */
+@keyframes pageTurnNext {
+  0% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(-90deg) translateX(-10%);
+    opacity: 0.3;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(-180deg) translateX(-20%);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes pageTurnNextReveal {
+  0% {
+    transform: perspective(1500px) rotateY(180deg) translateX(20%);
+    opacity: 0;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(90deg) translateX(10%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes pageTurnPrevious {
+  0% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(90deg) translateX(10%);
+    opacity: 0.3;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(180deg) translateX(20%);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes pageTurnPreviousReveal {
+  0% {
+    transform: perspective(1500px) rotateY(-180deg) translateX(-20%);
+    opacity: 0;
+  }
+  50% {
+    transform: perspective(1500px) rotateY(-90deg) translateX(-10%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: perspective(1500px) rotateY(0deg) translateX(0%);
+    opacity: 1;
+  }
+}
+
+.page-turn-next {
+  animation: pageTurnNext 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: left center;
+}
+
+.page-turn-next-reveal {
+  animation: pageTurnNextReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: right center;
+}
+
+.page-turn-previous {
+  animation: pageTurnPrevious 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: right center;
+}
+
+.page-turn-previous-reveal {
+  animation: pageTurnPreviousReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: left center;
+}
+
+/* Seal hover effect */
+.seal-hover {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.seal-hover:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.seal-hover:active {
+  transform: scale(0.98);
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 115, 85, 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 115, 85, 0.7);
+}

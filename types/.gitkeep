@@ -1,0 +1,8 @@
+# Types Directory
+
+Place TypeScript type definitions here.
+
+Example:
+- types/storybook.ts - Storybook-related types
+- types/index.ts - Shared types
+
