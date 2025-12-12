@@ -2,21 +2,24 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { getCharacterPages, findPageIndexById, StoryPage } from '@/types/story';
+import { getCharacterPages, StoryPage } from '@/types/story';
+import CharacterModal from './CharacterModal';
 
 interface CharacterGalleryProps {
-  onCharacterSelect: (pageIndex: number) => void;
+  onCharacterSelect?: (pageIndex: number) => void;
 }
 
 export default function CharacterGallery({ onCharacterSelect }: CharacterGalleryProps) {
   const [hoveredCharacter, setHoveredCharacter] = useState<string | null>(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<StoryPage | null>(null);
   const characterPages = getCharacterPages();
 
   const handleCharacterClick = (character: StoryPage) => {
-    const pageIndex = findPageIndexById(character.id);
-    if (pageIndex !== -1) {
-      onCharacterSelect(pageIndex);
-    }
+    setSelectedCharacter(character);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCharacter(null);
   };
 
   return (
@@ -111,22 +114,32 @@ export default function CharacterGallery({ onCharacterSelect }: CharacterGallery
         </div>
 
         {/* Back to Story Button */}
-        <div className="text-center mt-12">
-          <button
-            onClick={() => onCharacterSelect(0)}
-            className="
-              px-8 py-4 font-serif text-lg text-parchment-text
-              bg-parchment-dark/80 backdrop-blur-sm
-              border-2 border-parchment-text/30 rounded-lg
-              transition-all duration-300
-              hover:bg-parchment-dark hover:border-parchment-text/50 hover:scale-105
-              shadow-lg
-            "
-          >
-            Return to Story
-          </button>
-        </div>
+        {onCharacterSelect && (
+          <div className="text-center mt-12">
+            <button
+              onClick={() => onCharacterSelect(0)}
+              className="
+                px-8 py-4 font-serif text-lg text-parchment-text
+                bg-parchment-dark/80 backdrop-blur-sm
+                border-2 border-parchment-text/30 rounded-lg
+                transition-all duration-300
+                hover:bg-parchment-dark hover:border-parchment-text/50 hover:scale-105
+                shadow-lg
+              "
+            >
+              Return to Story
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Character Modal */}
+      {selectedCharacter && (
+        <CharacterModal
+          character={selectedCharacter}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }

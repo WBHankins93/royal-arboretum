@@ -18,6 +18,10 @@ export default function Home() {
     setAppState('story');
   };
 
+  const handleHomeClick = () => {
+    setAppState('landing');
+  };
+
   if (appState === 'landing') {
     return <LandingPage onSealClick={handleSealClick} />;
   }
@@ -25,10 +29,10 @@ export default function Home() {
   if (appState === 'opening') {
     return (
       <BookOpening onAnimationComplete={handleAnimationComplete}>
-        <StoryContainer initialPage={0} />
+        <StoryContainer initialPage={0} onHomeClick={handleHomeClick} />
       </BookOpening>
     );
   }
 
-  return <StoryContainer initialPage={0} />;
+  return <StoryContainer initialPage={0} onHomeClick={handleHomeClick} />;
 }

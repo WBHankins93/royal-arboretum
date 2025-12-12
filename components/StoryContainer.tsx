@@ -4,13 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import StoryPage from './StoryPage';
 import Pagination from './Pagination';
 import PageTransition from './PageTransition';
+import HomeButton from './HomeButton';
 import { storyPages } from '@/types/story';
 
 interface StoryContainerProps {
   initialPage?: number;
+  onHomeClick?: () => void;
 }
 
-export default function StoryContainer({ initialPage = 0 }: StoryContainerProps) {
+export default function StoryContainer({ initialPage = 0, onHomeClick }: StoryContainerProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(initialPage);
   const [isAnimating, setIsAnimating] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState<'next' | 'previous'>('next');
@@ -128,6 +130,11 @@ export default function StoryContainer({ initialPage = 0 }: StoryContainerProps)
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
+      {/* Home Button */}
+      {onHomeClick && (
+        <HomeButton onHomeClick={onHomeClick} />
+      )}
+
       {isAnimating ? (
         <PageTransition
           direction={transitionDirection}
