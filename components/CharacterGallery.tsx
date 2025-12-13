@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { getCharacterPages, StoryPage } from '@/types/story';
+import { getAllGalleryPages, StoryPage } from '@/types/story';
+import { useIsMobile } from '@/utils/useIsMobile';
 import CharacterModal from './CharacterModal';
 
 interface CharacterGalleryProps {
@@ -10,9 +11,10 @@ interface CharacterGalleryProps {
 }
 
 export default function CharacterGallery({ onCharacterSelect }: CharacterGalleryProps) {
+  const isMobile = useIsMobile();
   const [hoveredCharacter, setHoveredCharacter] = useState<string | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<StoryPage | null>(null);
-  const characterPages = getCharacterPages();
+  const galleryPages = getAllGalleryPages(isMobile);
 
   const handleCharacterClick = (character: StoryPage) => {
     setSelectedCharacter(character);
@@ -35,9 +37,9 @@ export default function CharacterGallery({ onCharacterSelect }: CharacterGallery
           </p>
         </div>
 
-        {/* Character Grid */}
+        {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {characterPages.map((character, index) => (
+          {galleryPages.map((character, index) => (
             <div
               key={character.id}
               className={`

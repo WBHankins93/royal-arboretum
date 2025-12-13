@@ -5,7 +5,8 @@ import StoryPage from './StoryPage';
 import Pagination from './Pagination';
 import PageTransition from './PageTransition';
 import HomeButton from './HomeButton';
-import { storyPages } from '@/types/story';
+import { getMobileStoryPages, getDesktopStoryPages } from '@/types/story';
+import { useIsMobile } from '@/utils/useIsMobile';
 
 interface StoryContainerProps {
   initialPage?: number;
@@ -13,6 +14,9 @@ interface StoryContainerProps {
 }
 
 export default function StoryContainer({ initialPage = 0, onHomeClick }: StoryContainerProps) {
+  const isMobile = useIsMobile();
+  const storyPages = isMobile ? getMobileStoryPages() : getDesktopStoryPages();
+  
   const [currentPageIndex, setCurrentPageIndex] = useState(initialPage);
   const [isAnimating, setIsAnimating] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState<'next' | 'previous'>('next');

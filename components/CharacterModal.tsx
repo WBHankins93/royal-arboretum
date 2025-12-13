@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { StoryPage } from '@/types/story';
+import { useIsMobile } from '@/utils/useIsMobile';
 
 interface CharacterModalProps {
   character: StoryPage;
@@ -10,6 +11,8 @@ interface CharacterModalProps {
 }
 
 export default function CharacterModal({ character, onClose }: CharacterModalProps) {
+  const isMobile = useIsMobile();
+  const imageSrc = isMobile && character.mobileImageSrc ? character.mobileImageSrc : character.imageSrc;
   // Close modal on ESC key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -30,7 +33,8 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
     };
   }, []);
 
-  if (!character.imageSrc) return null;
+  // Only show modal for pages with images (characters, images, blueprints)
+  if (!imageSrc) return null;
 
   return (
     <div 
@@ -70,7 +74,7 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
         <div className="flex items-center justify-center w-full h-full min-h-[80vh]">
           <div className="relative w-full h-full flex items-center justify-center">
             <Image
-              src={character.imageSrc}
+              src={imageSrc}
               alt={character.characterName || character.title}
               width={2000}
               height={2000}

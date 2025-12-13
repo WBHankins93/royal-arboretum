@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { StoryPage as StoryPageType } from '@/types/story';
 import CharacterGallery from './CharacterGallery';
+import { useIsMobile } from '@/utils/useIsMobile';
 
 interface StoryPageProps {
   page: StoryPageType;
@@ -10,22 +11,28 @@ interface StoryPageProps {
 }
 
 export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
-  if (page.type === 'video' && page.videoSrc) {
+  const isMobile = useIsMobile();
+  const videoSrc = isMobile && page.mobileVideoSrc ? page.mobileVideoSrc : page.videoSrc;
+  const imageSrc = isMobile && page.mobileImageSrc ? page.mobileImageSrc : page.imageSrc;
+  
+  if (page.type === 'video' && videoSrc) {
     return (
       <div className="w-full h-screen parchment-bg flex items-center justify-center p-4">
         <div className="w-full max-w-7xl h-full flex flex-col items-center justify-center gap-6">
-          {/* Main Title */}
-          <div className="text-center animate-fade-in z-10 px-4">
-            <h1 className="storybook-title
-              text-5xl md:text-7xl lg:text-8xl
-              text-parchment-text
-              drop-shadow-lg
-              mb-2
-              [text-shadow:_2px_2px_4px_rgba(0,0,0,0.1),_-2px_-2px_4px_rgba(255,255,255,0.1)]
-            ">
-              The Royal Arboretum
-            </h1>
-          </div>
+          {/* Main Title - Only show on first video page */}
+          {page.id === 'video-treehouse' || page.id === 'video-treehouse-vertical' ? (
+            <div className="text-center animate-fade-in z-10 px-4">
+              <h1 className="storybook-title
+                text-5xl md:text-7xl lg:text-8xl
+                text-parchment-text
+                drop-shadow-lg
+                mb-2
+                [text-shadow:_2px_2px_4px_rgba(0,0,0,0.1),_-2px_-2px_4px_rgba(255,255,255,0.1)]
+              ">
+                The Royal Arboretum
+              </h1>
+            </div>
+          ) : null}
           
           {/* Video */}
           <div className="w-full h-full flex items-center justify-center">
@@ -36,7 +43,7 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
               playsInline
               className="w-full h-full object-contain rounded-lg shadow-2xl"
             >
-              <source src={page.videoSrc} type="video/mp4" />
+              <source src={videoSrc} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -45,7 +52,7 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
     );
   }
 
-  if (page.type === 'image' && page.imageSrc) {
+  if (page.type === 'image' && imageSrc) {
     return (
       <div className="w-full h-screen parchment-bg flex items-center justify-center p-4 overflow-auto">
         <div className="w-full max-w-7xl h-full flex flex-col items-center justify-center py-8">
@@ -63,7 +70,7 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
           )}
           <div className="relative w-full h-full max-h-[80vh] flex items-center justify-center">
             <Image
-              src={page.imageSrc}
+              src={imageSrc}
               alt={page.title || 'Story page'}
               width={2000}
               height={2000}
@@ -76,7 +83,7 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
     );
   }
 
-  if (page.type === 'blueprint' && page.imageSrc) {
+  if (page.type === 'blueprint' && imageSrc) {
     return (
       <div className="w-full h-screen parchment-bg flex items-center justify-center p-4 overflow-auto">
         <div className="w-full max-w-7xl h-full flex flex-col items-center justify-center py-8">
@@ -94,7 +101,7 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
           )}
           <div className="relative w-full h-full max-h-[85vh] flex items-center justify-center">
             <Image
-              src={page.imageSrc}
+              src={imageSrc}
               alt={page.title || 'Blueprint'}
               width={2000}
               height={2000}
@@ -111,13 +118,13 @@ export default function StoryPage({ page, onCharacterSelect }: StoryPageProps) {
     return <CharacterGallery onCharacterSelect={onCharacterSelect} />;
   }
 
-  if (page.type === 'character' && page.imageSrc) {
+  if (page.type === 'character' && imageSrc) {
     return (
       <div className="w-full h-screen parchment-bg flex items-center justify-center p-4 overflow-auto">
         <div className="w-full max-w-7xl h-full flex items-center justify-center py-8">
           <div className="relative w-full h-full max-h-[90vh] flex items-center justify-center">
             <Image
-              src={page.imageSrc}
+              src={imageSrc}
               alt={page.characterName || page.title}
               width={2000}
               height={2000}
