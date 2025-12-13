@@ -15,27 +15,31 @@ export default function LandingPage({ onSealClick }: LandingPageProps) {
   // On mobile, show book cover with clickable seal area
   if (isMobile) {
     return (
-      <div className="flex items-center justify-center min-h-screen parchment-bg relative">
-        <div className="text-center w-full h-full flex items-center justify-center">
-          <div className="relative w-full h-full">
+      <div 
+        className="flex items-center justify-center min-h-screen parchment-bg relative"
+        onClick={onSealClick}
+        onTouchStart={(e) => {
+          // Only trigger if not clicking on the instruction text
+          if ((e.target as HTMLElement).tagName !== 'P') {
+            onSealClick();
+          }
+        }}
+      >
+        <div className="text-center w-full h-full flex items-center justify-center relative">
+          <div className="relative w-full h-full max-w-full max-h-full">
             <Image
               src="/mobile-images/book-cover-mobile.png"
-              alt="Royal Arboretum Book Cover"
+              alt="Royal Arboretum Book Cover - Tap to open"
               width={800}
               height={1200}
               className="w-full h-full object-contain"
               priority
             />
-            {/* Clickable seal area - positioned where seal appears on book cover */}
-            <button
-              onClick={onSealClick}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 opacity-0 hover:opacity-10 active:opacity-20 transition-opacity"
-              aria-label="Click to open book"
-            >
-              {/* Invisible clickable area */}
-            </button>
           </div>
-          <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-lg text-parchment-text/70 animate-fade-in">
+          <p 
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-lg text-parchment-text/70 animate-fade-in z-20 pointer-events-none"
+            onClick={(e) => e.stopPropagation()}
+          >
             Tap the seal to open
           </p>
         </div>
